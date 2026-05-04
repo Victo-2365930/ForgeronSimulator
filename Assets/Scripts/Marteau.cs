@@ -1,10 +1,16 @@
+using System.Collections;
 using UnityEngine;
 
 public class Marteau : MonoBehaviour
 {
 
-    public GameController controller;
     public FeedbackHaptics haptics;
+    private bool peutFrapper = true;
+
+
+    [Header("Paramètres de frappe")]
+    [SerializeField, Tooltip("Délai entre deux coups")]
+    private float delaiEntreCoups = 1.0f;
 
     /// <summary>
     /// Pour gérer l'intéraction du marteau avec un lingot
@@ -12,15 +18,24 @@ public class Marteau : MonoBehaviour
     /// <param name="other">Le gameObject touché par le marteau</param>
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Lingot"))
-        {
-            Lingot lingo = other.GetComponent<Lingot>();
+        if (!peutFrapper || !other.CompareTag("Lingot")) return;
 
-            lingo.FrappeDeMarteau();
-            //Délais entre 2 frappes
-            //Faire un feedback haptic
+        Lingot lingo = other.GetComponent<Lingot>();
+        lingo.FrappeDeMarteau();
 
-        }
+        haptics.OnFrappeLingot();
+
+        StartCoroutine(GestionDelaiFrappe());
+
     }
 
+    /// <summary>
+    /// Pour avoir un délais entre les frappe
+    /// </summary>
+    private IEnumerator GestionDelaiFrappe()
+    {
+        peutFrapper = false;
+        yield return new WaitForSeconds(delaiEntreCoups);
+        peutFrapper = true;
+    }
 }
