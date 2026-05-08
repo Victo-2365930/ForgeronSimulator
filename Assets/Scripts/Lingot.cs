@@ -40,20 +40,25 @@ public class Lingot : MonoBehaviour
     public GameObject forme4;
     [SerializeField, Tooltip("Lingot Forme 5 (Épée)")]
     public GameObject forme5;
+    [SerializeField] private Color couleurChaude = new Color(1.0f, 0.35f, 0.0f);
+    private Color couleurOriginale;
+    private MeshRenderer[] renderersFormes;
 
     [Header("Variables de jeu")]
     [SerializeField, Tooltip("Nombre d'échec avant une destruction de lingot")]
-    private int nbErreurLingot = 0;
-    private int erreurLingot = 0;
+    private int nbErreurLingot = 3;
+    public int erreurLingot = 0;
 
     [SerializeField, Tooltip("temps entre les montées de chaleur lorsque le lingot est dans la forge")]
     private float tempsForge = 1.0f;
     [SerializeField, Tooltip("Augmentation de la chaleur à chaque intervale de temps")]
     private float chaleurParTic = 5.0f;
 
-    [SerializeField, Tooltip("Chaleur minimale")]
-    private float chaleurMinimale = 60.0f;
-    private float chaleurLingot = 0.0f;
+    [SerializeField, Tooltip("Chaleur minimale pour le frapper")]
+    public float chaleurMinimale = 60.0f;
+    public float chaleurLingot = 0.0f;
+    [SerializeField, Tooltip("Chaleur maximale possible")]
+    public float chaleurMaximale = 100.0f;
 
     [SerializeField, Tooltip("Nombre de coup requis par phase de lingot")]
     private int nbCoupRequis = 2;
@@ -61,6 +66,22 @@ public class Lingot : MonoBehaviour
 
 
     #endregion Variables
+
+    private void Start()
+    {
+        renderersFormes = new MeshRenderer[5];
+        renderersFormes[0] = forme1.GetComponent<MeshRenderer>();
+        renderersFormes[1] = forme2.GetComponent<MeshRenderer>();
+        renderersFormes[2] = forme3.GetComponent<MeshRenderer>();
+        renderersFormes[3] = forme4.GetComponent<MeshRenderer>();
+        renderersFormes[4] = forme5.GetComponent<MeshRenderer>();
+
+        // On mémorise la couleur du matériel de la forme 1 comme base
+        if (renderersFormes[0] != null)
+        {
+            couleurOriginale = renderersFormes[0].material.color;
+        }
+    }
 
     /// <summary>
     /// Pour réagit à la frappe entre le marteau et le lingot
@@ -76,6 +97,7 @@ public class Lingot : MonoBehaviour
         {
             //BruitDerreur.mp3
             erreurLingot++;
+            gameManager.MajUI();
             if (erreurLingot >= nbErreurLingot) DetruireLingot();
         }
         else {
@@ -84,15 +106,6 @@ public class Lingot : MonoBehaviour
             if (nbCoup % nbCoupRequis == 0) ChangerEtat();
         }
             
-    }
-
-    /// <summary>
-    /// Pour mettre à jour le UI suite à un changement dans le jeu
-    /// </summary>
-    private void MiseAJourUI()
-    {
-        //NbCoup
-        //Objectif
     }
 
     #region GestionDeChaleur
@@ -104,7 +117,11 @@ public class Lingot : MonoBehaviour
     private void ChaufferLingot()
     {
         if (etatLingot == 5) return;
-        chaleurLingot += chaleurParTic;
+        if(chaleurLingot >= chaleurMaximale) chaleurLingot = chaleurMaximale;
+        else chaleurLingot += chaleurParTic;
+
+        AppliquerCouleurChaleur();
+        gameManager.MajUI();
     }
 
     /// <summary>
@@ -120,6 +137,8 @@ public class Lingot : MonoBehaviour
             //Bruit ppsshhhh.mp3
             chaleurLingot -= chaleurParTic*3.0f;
             if (chaleurLingot < 0.0f) chaleurLingot = 0.0f;
+
+            AppliquerCouleurChaleur();
         }
 
         if (etatLingot == 4) 
@@ -127,6 +146,24 @@ public class Lingot : MonoBehaviour
             etatLingot = 5;
             MiseAJourVisuel();
             seauEnCours = false;
+        }
+    }
+
+    /// <summary>
+    /// Pour appliquer la couleur sur le lingot
+    /// <IA> Généré par Gemini</IA>
+    /// </summary>
+    private void AppliquerCouleurChaleur()
+    {
+        float pourcentage = chaleurLingot / chaleurMaximale;
+
+        // On transitionne de la couleur d'origine vers le rouge-orange
+        Color couleurActuelle = Color.Lerp(couleurOriginale, couleurChaude, pourcentage);
+
+        int index = etatLingot - 1;
+        if (index >= 0 && index < renderersFormes.Length && renderersFormes[index] != null)
+        {
+            renderersFormes[index].material.color = couleurActuelle;
         }
     }
 
@@ -197,6 +234,7 @@ public class Lingot : MonoBehaviour
         etatLingot++;
         nbCoup = 0;
         MiseAJourVisuel();
+        gameManager.MajUI();
     }
 
     /// <summary>
@@ -209,6 +247,8 @@ public class Lingot : MonoBehaviour
         forme3.SetActive(etatLingot == 3);
         forme4.SetActive(etatLingot == 4);
         forme5.SetActive(etatLingot == 5);
+
+        AppliquerCouleurChaleur();
     }
 
     /// <summary>
