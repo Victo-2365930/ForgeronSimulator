@@ -6,13 +6,10 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 /*
  * À faire:
  *  Les mp3 et les intégrer
- *  Changer le bras Gauche pour une pince
- *      Changement de bras dans les options?
- *	Terminer le UI pour le haut du ratelier (code)
- *	Grab Intéraction
- *		Faire en sorte que le marteau reste collé sur le bras
- *	Mettre tout ensemle et prier
- 
+ *  Menu ouvrir/fermer/Recommencer
+ *	Intéraction ratelier <>Épée terminée
+ *	(Bonus)Le métal orangé)
+ *	Remettre les valeurs dans l'inspecteur comme valeur par défaut dans le code
  */
 
 public class Lingot : MonoBehaviour
@@ -24,6 +21,8 @@ public class Lingot : MonoBehaviour
     GameManager gameManager;
     private bool forgeEnCours = false;
     private bool seauEnCours = false;
+    private Coroutine forgeRoutine;
+
 
     private XRGrabInteractable grabInteractable;
 
@@ -54,13 +53,15 @@ public class Lingot : MonoBehaviour
 
     [Header("Variables de jeu")]
     [SerializeField, Tooltip("Nombre d'échec avant une destruction de lingot")]
-    private int nbErreurLingot = 3;
+    private int nbErreurLingot = 5;
     public int erreurLingot = 0;
 
-    [SerializeField, Tooltip("temps entre les montées de chaleur lorsque le lingot est dans la forge")]
-    private float tempsForge = 1.0f;
+    [SerializeField, Tooltip("Tick entre les montées et baisses de chaleur")]
+    private float tempsChaleur = 0.5f;
     [SerializeField, Tooltip("Augmentation de la chaleur à chaque intervale de temps")]
     private float chaleurParTic = 5.0f;
+    [SerializeField, Tooltip("Vitesse du refroidissement naturel à l'air libre")]
+    private float vitesseRefroidissementAir = 0.5f;
 
     [SerializeField, Tooltip("Chaleur minimale pour le frapper")]
     public float chaleurMinimale = 60.0f;
@@ -69,7 +70,7 @@ public class Lingot : MonoBehaviour
     public float chaleurMaximale = 100.0f;
 
     [SerializeField, Tooltip("Nombre de coup requis par phase de lingot")]
-    private int nbCoupRequis = 2;
+    private int nbCoupRequis = 3;
     private int nbCoup = 0;
 
 
@@ -89,6 +90,9 @@ public class Lingot : MonoBehaviour
         {
             couleurOriginale = renderersFormes[0].material.color;
         }
+
+        StartCoroutine(GestionnaireRefroidissement());
+
     }
 
     /// <summary>
@@ -117,7 +121,7 @@ public class Lingot : MonoBehaviour
     }
 
     #region XR GRAB
-
+    //<IA> Modification du grab interactable par Gemini
 
     private void Awake()
     {
@@ -126,9 +130,7 @@ public class Lingot : MonoBehaviour
 
     private void OnEnable()
     {
-        // On s'abonne à l'événement de saisie (Select Entered)
         grabInteractable.selectEntered.AddListener(AssignerCommeActif);
-        // Optionnel : On s'abonne à la sortie (Select Exited) si tu veux cacher l'UI quand on lâche
         grabInteractable.selectExited.AddListener(RetirerCommeActif);
     }
 
@@ -145,7 +147,6 @@ public class Lingot : MonoBehaviour
 
     private void RetirerCommeActif(SelectExitEventArgs args)
     {
-        // Si tu veux que l'UI disparaisse quand tu lâches le lingot
         if (gameManager != null) gameManager.DeselectionnerLingot();
     }
 
@@ -155,41 +156,16 @@ public class Lingot : MonoBehaviour
 
 
     /// <summary>
-    /// Pour chaufer le lingot d'un incrément de chaleurParTic
+    /// Pour chaufer le lingot
     /// </summary>
     private void ChaufferLingot()
     {
         if (etatLingot == 5) return;
-        if(chaleurLingot >= chaleurMaximale) chaleurLingot = chaleurMaximale;
-        else chaleurLingot += chaleurParTic;
+        chaleurLingot += chaleurParTic;
+        if (chaleurLingot >= chaleurMaximale) chaleurLingot = chaleurMaximale;
 
         AppliquerCouleurChaleur();
         gameManager.MajUI();
-    }
-
-    /// <summary>
-    /// Pour refroidir le lingot de 3 incréments de chaleurParTic
-    ///     Change le lingot en épée s'il est en phase 4
-    /// </summary>
-    private void RefroidirLingot()
-    {
-        if (etatLingot == 5) return;
-
-        if (chaleurLingot > 0)
-        {
-            //Bruit ppsshhhh.mp3
-            chaleurLingot -= chaleurParTic*3.0f;
-            if (chaleurLingot < 0.0f) chaleurLingot = 0.0f;
-
-            AppliquerCouleurChaleur();
-        }
-
-        if (etatLingot == 4) 
-        {
-            etatLingot = 5;
-            MiseAJourVisuel();
-            seauEnCours = false;
-        }
     }
 
     /// <summary>
@@ -219,13 +195,23 @@ public class Lingot : MonoBehaviour
         if (other.CompareTag("Forge"))
         {
             forgeEnCours = true;
-            StartCoroutine(GestionnaireForge());
+
+            if (forgeRoutine == null)
+                forgeRoutine = StartCoroutine(GestionnaireForge());
         }
 
         if (other.CompareTag("Seau"))
         {
             seauEnCours = true;
-            StartCoroutine(GestionnaireSeau());
+
+            if (etatLingot == 4 && chaleurLingot >= chaleurMinimale)
+            {
+                etatLingot = 5;
+                chaleurLingot = 0;
+                MiseAJourVisuel();
+                gameManager.MajUI();
+                //PSSSHHH.mp3
+            }
         }
     }
 
@@ -235,7 +221,16 @@ public class Lingot : MonoBehaviour
     /// <param name="other">L'autre gameobject sortit</param>
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Forge")) forgeEnCours = false;
+        if (other.CompareTag("Forge"))
+        {
+            forgeEnCours = false;
+
+            if (forgeRoutine != null)
+            {
+                StopCoroutine(forgeRoutine);
+                forgeRoutine = null;
+            }
+        }
         if (other.CompareTag("Seau")) seauEnCours = false;
 
     }
@@ -248,19 +243,29 @@ public class Lingot : MonoBehaviour
         while (forgeEnCours)
         {
             ChaufferLingot();
-            yield return new WaitForSeconds(tempsForge);
+            yield return new WaitForSeconds(tempsChaleur);
         }
     }
 
     /// <summary>
     /// Pour gérer le temps du refroidissement du lingot
     /// </summary>
-    private IEnumerator GestionnaireSeau()
+    private IEnumerator GestionnaireRefroidissement()
     {
-        while (seauEnCours && chaleurLingot > 0.0f)
+        while (true)
         {
-            RefroidirLingot();
-            yield return new WaitForSeconds(1.0f);
+            if (!forgeEnCours && chaleurLingot > 0 && etatLingot < 5)
+            {
+                float vitesse = seauEnCours ? (vitesseRefroidissementAir * 5f) : vitesseRefroidissementAir;
+
+                chaleurLingot -= vitesse * tempsChaleur;
+                if (chaleurLingot < 0) chaleurLingot = 0;
+
+                AppliquerCouleurChaleur();
+                gameManager.MajUI();
+            }
+
+            yield return new WaitForSeconds(tempsChaleur);
         }
     }
 

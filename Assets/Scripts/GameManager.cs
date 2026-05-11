@@ -25,10 +25,17 @@ public class GameManager : MonoBehaviour
     [Header("Écrans de jeu")]
     [SerializeField, Tooltip("Écran de menu")]
     private Canvas ecranMenu;
-    [SerializeField, Tooltip("Écran de gameOver")]
-    private Canvas ecranGameOver;
 
-    [Header("UI du joueur")]
+    [Header("Écran de GameOver")]
+    [SerializeField, Tooltip("Canvas de gameOver")]
+    private Canvas ecranGameOver;
+    [SerializeField, Tooltip("Titre du GameOver")]
+    private TextMeshProUGUI gameOverTitre;
+    [SerializeField, Tooltip("Texte de l'écran")]
+    private TextMeshProUGUI gameOverTexte;
+
+
+    [Header("UI du lingot")]
     [SerializeField, Tooltip("UI du lingot")]
     private Canvas UILingot;
     [SerializeField, Tooltip("Barre de progression de chaleur")]
@@ -39,6 +46,10 @@ public class GameManager : MonoBehaviour
     private Image erreur2;
     [SerializeField, Tooltip("Image d'erreur #3")]
     private Image erreur3;
+    [SerializeField, Tooltip("Image d'erreur #3")]
+    private Image erreur4;
+    [SerializeField, Tooltip("Image d'erreur #3")]
+    private Image erreur5;
     [SerializeField, Tooltip("Texte d'instruction")]
     private TextMeshProUGUI instruction;
     private string[] textesInstruction = {
@@ -50,11 +61,6 @@ public class GameManager : MonoBehaviour
         "Emmenez l'épée au ratelier",
         "Chauffez le métal"
     };
-
-
-
-
-
 
     #endregion Variables
 
@@ -81,6 +87,8 @@ public class GameManager : MonoBehaviour
             erreur1.color = (nbErreur >= 1) ? Color.red : Color.white;
             erreur2.color = (nbErreur >= 2) ? Color.red : Color.white;
             erreur3.color = (nbErreur >= 3) ? Color.red : Color.white;
+            erreur4.color = (nbErreur >= 4) ? Color.red : Color.white;
+            erreur5.color = (nbErreur >= 5) ? Color.red : Color.white;
 
             //Texte d'instruction
             int etatLingot = lingotActif.etatLingot;
@@ -120,7 +128,7 @@ public class GameManager : MonoBehaviour
     {
         nbLingotDetruit++;
         MajUI();
-        if (nbLingotDetruit >= nbLingotDetruitMax) GameOverPerdu();
+        if (nbLingotDetruit >= nbLingotDetruitMax) GameOver(false);
 
     }
 
@@ -133,27 +141,34 @@ public class GameManager : MonoBehaviour
         MajUI();
         //Ajouter une épée au ratelier
 
-        if (nbEpeeCompletee >= nbEpeeACompleter) GameOverGagner();
+        if (nbEpeeCompletee >= nbEpeeACompleter) GameOver(true);
 
     }
 
     /// <summary>
-    /// Pour arrêter le jeu et mettre le UI de partie terminée (Gagné)
+    /// Pour mettre l'écran de fin
     /// </summary>
-    private void GameOverGagner()
+    /// <param name="gagne">
+    ///  true = Mettre l'écran de victoire
+    ///  false = Mettre l'écran de défaite
+    ///  </param>
+    private void GameOver(bool gagne)
     {
-        //Arrêter les controles
-        //Mettre le ecranGameOver UI
+        if (gagne)
+        {
+            gameOverTitre.text = "Vous avez gagné!";
+            gameOverTexte.text = "Les braises brillent encore après votre triomphe!";
+
+        }
+        else
+        {
+            gameOverTitre.text = "Vous avez perdu";
+            gameOverTexte.text = "Le métal était trop faible....comme toi.";
+        }
+        ecranMenu.gameObject.SetActive(false);
+        ecranGameOver.gameObject.SetActive(true);
     }
 
-    /// <summary>
-    /// Pour arrêter le jeu et mettre le UI de partie terminée (Perdu)
-    /// </summary>
-    private void GameOverPerdu()
-    {
-        //Arrêter les controles
-        //Mettre le GameOver UI
-    }
 
 
 }
