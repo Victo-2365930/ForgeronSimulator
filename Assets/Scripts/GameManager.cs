@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Variables de jeu")]
     [SerializeField, Tooltip("Nombre d'épée complétés avant de gagner")]
-    private int nbEpeeACompleter = 1;
+    private int nbEpeeACompleter = 3;
     private int nbEpeeCompletee = 0;
     [SerializeField, Tooltip("Nombre de lingot détruit avant de perdre")]
     private int nbLingotDetruitMax = 4;
@@ -51,14 +51,30 @@ public class GameManager : MonoBehaviour
         "Chauffez le métal"
     };
 
-
-
-
-
+    [Header("Canvas Objectif")]
+    [SerializeField, Tooltip("Message affichant le nombre d'épées à terminer")]
+    private TextMeshProUGUI messageObjectif;
+    [SerializeField, Tooltip("Message affichant le nombre d'épées complétées")]
+    private TextMeshProUGUI messageEpee;
+    [SerializeField, Tooltip("Message affichant le nombre de lingots cassés")]
+    private TextMeshProUGUI messageLingot;
 
     #endregion Variables
 
+    private void Start()
+    {
+        // Message initialisé pour l'objectif
+        if (messageObjectif != null)
+            messageObjectif.text = $"Tu dois terminer {nbEpeeACompleter} épée(s)";
 
+        // Message initialisé pour le nombre d'épée terminé
+        if (messageEpee != null)
+            messageEpee.text = $"Tu as terminé {nbEpeeCompletee} épée(s)";
+
+        // Message initialisé pour le nombre de lingot cassé
+        if (messageLingot != null)
+            messageLingot.text = $"Tu as cassé {nbLingotDetruit} lingot(s)";
+    }
     void RecommencerJeu()
     {
         //Reset la scène?
@@ -120,6 +136,11 @@ public class GameManager : MonoBehaviour
     {
         nbLingotDetruit++;
         MajUI();
+
+        // Message pour lingot cassé
+        if (messageLingot != null)
+            messageLingot.text = $"Tu as cassé {nbLingotDetruit} lingot(s)";
+
         if (nbLingotDetruit >= nbLingotDetruitMax) GameOverPerdu();
 
     }
@@ -132,6 +153,9 @@ public class GameManager : MonoBehaviour
         nbEpeeCompletee++;
         MajUI();
         //Ajouter une épée au ratelier
+        // Message pour épée terminé
+        if (messageEpee != null)
+            messageEpee.text = $"Tu as terminé {nbEpeeCompletee} épée(s)";
 
         if (nbEpeeCompletee >= nbEpeeACompleter) GameOverGagner();
 
@@ -154,6 +178,5 @@ public class GameManager : MonoBehaviour
         //Arrêter les controles
         //Mettre le GameOver UI
     }
-
 
 }
