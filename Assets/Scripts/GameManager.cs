@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
     private Canvas ecranGameOver;
 
     [Header("UI du joueur")]
+    [SerializeField, Tooltip("UI du lingot")]
+    private Canvas UILingot;
     [SerializeField, Tooltip("Barre de progression de chaleur")]
     private BarreDeProgression barreChaleur;
     [SerializeField, Tooltip("Image d'erreur #1")]
@@ -99,9 +101,15 @@ public class GameManager : MonoBehaviour
     /// <param name="nouveauLingotActif">Le nouveau Lingot qui a été sélectionné</param>
     public void SelectionnerLingot(Lingot nouveauLingotActif)
     {
+        UILingot.gameObject.SetActive(true);
         lingotActif = nouveauLingotActif;
-
         MajUI();
+    }
+
+    public void DeselectionnerLingot()
+    {
+        UILingot.gameObject.SetActive(false);
+        lingotActif = null;
     }
 
     /// <summary>

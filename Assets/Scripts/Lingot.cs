@@ -1,12 +1,18 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 /*
  * À faire:
  *  Les mp3 et les intégrer
- *  Le changement de couleur du métal
  *  Changer le bras Gauche pour une pince
  *      Changement de bras dans les options?
+ *	Terminer le UI pour le haut du ratelier (code)
+ *	Grab Intéraction
+ *		Faire en sorte que le marteau reste collé sur le bras
+ *	Mettre tout ensemle et prier
+ 
  */
 
 public class Lingot : MonoBehaviour
@@ -18,6 +24,8 @@ public class Lingot : MonoBehaviour
     GameManager gameManager;
     private bool forgeEnCours = false;
     private bool seauEnCours = false;
+
+    private XRGrabInteractable grabInteractable;
 
     /*
      * État Lingot
@@ -107,6 +115,41 @@ public class Lingot : MonoBehaviour
         }
             
     }
+
+    #region XR GRAB
+
+
+    private void Awake()
+    {
+        grabInteractable = GetComponent<XRGrabInteractable>();
+    }
+
+    private void OnEnable()
+    {
+        // On s'abonne à l'événement de saisie (Select Entered)
+        grabInteractable.selectEntered.AddListener(AssignerCommeActif);
+        // Optionnel : On s'abonne à la sortie (Select Exited) si tu veux cacher l'UI quand on lâche
+        grabInteractable.selectExited.AddListener(RetirerCommeActif);
+    }
+
+    private void OnDisable()
+    {
+        grabInteractable.selectEntered.RemoveListener(AssignerCommeActif);
+        grabInteractable.selectExited.RemoveListener(RetirerCommeActif);
+    }
+
+    private void AssignerCommeActif(SelectEnterEventArgs args)
+    {
+        if (gameManager != null) gameManager.SelectionnerLingot(this);
+    }
+
+    private void RetirerCommeActif(SelectExitEventArgs args)
+    {
+        // Si tu veux que l'UI disparaisse quand tu lâches le lingot
+        if (gameManager != null) gameManager.DeselectionnerLingot();
+    }
+
+    #endregion
 
     #region GestionDeChaleur
 
