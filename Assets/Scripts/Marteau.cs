@@ -20,11 +20,14 @@ public class Marteau : MonoBehaviour
     {
         if (!peutFrapper || !other.CompareTag("Lingot")) return;
 
-        Lingot lingo = other.GetComponent<Lingot>();
-        lingo.FrappeDeMarteau();
+        Lingot lingot = other.GetComponent<Lingot>();
 
-        haptics.OnFrappeLingot();
-
+        if(lingot != null)
+        {
+            lingot.FrappeDeMarteau();
+            haptics.OnFrappeLingot();
+        }
+        
         StartCoroutine(GestionDelaiFrappe());
 
     }
