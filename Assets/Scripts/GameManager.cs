@@ -71,8 +71,8 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI messageLingot;
 
     [Header("Ratelier")]
-    [SerializeField, Tooltip("Épées affichées dans le ratelier")]
-    private GameObject[] epeesRatelier;
+    [SerializeField] public GameObject epeeRatelier;
+
 
     #endregion Variables
 
@@ -161,34 +161,23 @@ public class GameManager : MonoBehaviour
         if (nbLingotDetruit >= nbLingotDetruitMax) GameOver(false);
 
     }
+
     /// <summary>
     /// Pour ajouter une épée au compte d'épée complétés
     /// </summary>
-    public void EpeeTerminee(GameObject epeeJoueur)
+    public void EpeeTerminee()
     {
         nbEpeeCompletee++;
         MajUI();
-
-        // Active une épée dans le ratelier
-        for (int i = 0; i < epeesRatelier.Length; i++)
-        {
-            if (!epeesRatelier[i].activeSelf)
-            {
-                epeesRatelier[i].SetActive(true);
-                break;
-            }
-        }
-
-        // Détruit l'épée du joueur
-        Destroy(epeeJoueur);
-
-        // Message pour épée terminée
+        //Ajouter une épée au ratelier
+        // Message pour épée terminé
         if (messageEpee != null)
             messageEpee.text = $"Tu as terminé {nbEpeeCompletee} épée(s)";
 
-        if (nbEpeeCompletee >= nbEpeeACompleter)
-            GameOver(true);
+        if (nbEpeeCompletee >= nbEpeeACompleter) GameOver(true);
+
     }
+
 
     /// <summary>
     /// Pour mettre l'écran de fin
@@ -212,14 +201,6 @@ public class GameManager : MonoBehaviour
         }
         ecranMenu.gameObject.SetActive(false);
         ecranGameOver.gameObject.SetActive(true);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Ratellier"))
-        {
-            GetComponent<GameManager>().EpeeTerminee(gameObject);
-        }
     }
 
 
