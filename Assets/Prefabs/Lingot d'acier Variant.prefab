@@ -99,6 +99,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lingot d'acier Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 1991329555191141319, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2526243439069778356, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_IsActive
       value: 0
