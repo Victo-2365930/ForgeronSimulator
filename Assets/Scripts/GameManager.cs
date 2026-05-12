@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using static UnityEngine.XR.ARSubsystems.XRCpuImage;
 
 public class GameManager : MonoBehaviour
@@ -85,34 +86,60 @@ public class GameManager : MonoBehaviour
     [SerializeField, Tooltip("Première épée du ratelier")]
     private GameObject ratelierEpee5;
 
+    public enum EtatJeu { Menu, EnJeu, GameOver }
+    private EtatJeu etatActuel;
 
 
     #endregion Variables
 
     private void Start()
     {
-        // Message initialisé pour l'objectif
+        // Le jeu est figé tant que le joueur n'a pas appuyé sur "Jouer"
+        Time.timeScale = 0f;
+
+        // Afficher uniquement le menu
+        ecranMenu.gameObject.SetActive(true);
+        ecranGameOver.gameObject.SetActive(false);
+
+        // Cacher l'UI du lingot au début
+        if (UILingot != null)
+            UILingot.gameObject.SetActive(false);
+
+        // Réinitialiser les compteurs
+        nbEpeeCompletee = 0;
+        nbLingotDetruit = 0;
+
+        // Mettre à jour les textes
         if (messageObjectif != null)
             messageObjectif.text = $"Tu dois terminer {nbEpeeACompleter} épée(s)";
 
-        // Message initialisé pour le nombre d'épée terminé
         if (messageEpee != null)
             messageEpee.text = $"Tu as terminé {nbEpeeCompletee} épée(s)";
 
-        // Message initialisé pour le nombre de lingot cassé
         if (messageLingot != null)
             messageLingot.text = $"Tu as cassé {nbLingotDetruit} lingot(s)";
     }
+
+
     public void CommencerJeu()
     {
-        
+        Time.timeScale = 1f; // Le jeu reprend
+
+        ecranMenu.gameObject.SetActive(false);
+
+        nbEpeeCompletee = 0;
+        nbLingotDetruit = 0;
+
+        MajUI();
     }
 
-    // Appelé par le bouton Rejouer
+
     public void Rejouer()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
 
     /// <summary>
     /// Pour mettre à jour le UI
@@ -218,20 +245,25 @@ public class GameManager : MonoBehaviour
     ///  </param>
     private void GameOver(bool gagne)
     {
+        Time.timeScale = 0f; // Stoppe tout
+
         if (gagne)
         {
             gameOverTitre.text = "Vous avez gagné!";
             gameOverTexte.text = "Les braises brillent encore après votre triomphe!";
-
         }
         else
         {
             gameOverTitre.text = "Vous avez perdu";
-            gameOverTexte.text = "Le métal était trop faible....comme toi.";
+            gameOverTexte.text = "Le métal était trop faible... comme toi.";
         }
-        ecranMenu.gameObject.SetActive(false);
+
+        // Positionner l'écran devant la caméra
+        Transform cam = Camera.main.transform;
+        ecranGameOver.transform.position = cam.position + cam.forward * 1.2f;
+        ecranGameOver.transform.rotation = Quaternion.LookRotation(cam.forward);
+
         ecranGameOver.gameObject.SetActive(true);
     }
-
 
 }
