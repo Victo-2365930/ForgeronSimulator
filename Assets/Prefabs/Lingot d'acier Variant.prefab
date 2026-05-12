@@ -81,7 +81,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 423770244715886210, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 423770244715886210, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_IsTrigger
@@ -89,7 +89,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1140377707745550185, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1140377707745550185, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_IsTrigger
@@ -103,9 +103,17 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2734883027071699871, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3773619893332725261, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: nbErreurLingot
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4241535453385738362, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5095358924316257643, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_IsActive
@@ -131,9 +139,13 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6875634472127279376, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7329488335636618260, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7329488335636618260, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_IsTrigger

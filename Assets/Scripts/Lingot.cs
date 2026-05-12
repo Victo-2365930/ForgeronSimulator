@@ -7,8 +7,8 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
  * À faire:
  *  Les mp3 et les intégrer
  *  Menu ouvrir/fermer/Recommencer
- *	Intéraction ratelier <>Épée terminée
- *	(Bonus)Le métal orangé)
+ *	Intéraction ratelier <> Épée terminée
+ *	((Bonus)Le métal orangé)
  *	Remettre les valeurs dans l'inspecteur comme valeur par défaut dans le code
  */
 
@@ -121,8 +121,11 @@ public class Lingot : MonoBehaviour
     }
 
     #region XR GRAB
-    //<IA> Modification du grab interactable par Gemini
-
+    /*
+     * Pour gérer autrement le XR Grab Interactable
+     * Pour gérer l'apparition et disparition du UI Lingot
+     *<IA> Modification par Gemini
+    */
     private void Awake()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
