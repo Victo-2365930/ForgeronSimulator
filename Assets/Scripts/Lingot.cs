@@ -213,6 +213,34 @@ public class Lingot : MonoBehaviour
                 //PSSSHHH.mp3
             }
         }
+
+        if (other.CompareTag("Ratellier"))
+        {
+            // Vérifie que l'épée est terminée
+            if (etatLingot == 5)
+            {
+                // Forcer le drop si le joueur la tient
+                XRGrabInteractable grab = GetComponent<XRGrabInteractable>();
+                if (grab != null && grab.isSelected)
+                {
+                    grab.interactionManager.SelectExit(grab.firstInteractorSelecting, grab);
+                }
+
+                // Faire apparaître l'épée du ratelier
+                if (gameManager != null && gameManager.epeeRatelier != null)
+                {
+                    gameManager.epeeRatelier.SetActive(true);
+                }
+
+                // Incrémenter l'objectif
+                if (gameManager != null)
+                    gameManager.EpeeTerminee();
+
+                // Détruire l'épée du joueur
+                Destroy(gameObject);
+            }
+        }
+
     }
 
     /// <summary>

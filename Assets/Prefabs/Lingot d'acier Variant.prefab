@@ -81,7 +81,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 423770244715886210, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 423770244715886210, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_IsTrigger
@@ -89,7 +89,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1140377707745550185, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1140377707745550185, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_IsTrigger
@@ -103,9 +103,25 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2734883027071699871, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3773619893332725261, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
+      propertyPath: nbCoupRequis
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3773619893332725261, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: nbErreurLingot
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3773619893332725261, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
+      propertyPath: vitesseRefroidissementAir
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4241535453385738362, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5095358924316257643, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_IsActive
@@ -131,9 +147,13 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6875634472127279376, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7329488335636618260, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7329488335636618260, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: m_IsTrigger
@@ -174,8 +194,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.584443, y: 0.09777957, z: 0.21300447}
-  m_Center: {x: 0.16310138, y: 0.026521236, z: 0.00369972}
+  m_Size: {x: 0.3956592, y: 0.09777957, z: 0.21300447}
+  m_Center: {x: 0.17161572, y: 0.026521236, z: 0.00369972}
 --- !u!4 &1378563773549254332 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 222675585049058248, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
