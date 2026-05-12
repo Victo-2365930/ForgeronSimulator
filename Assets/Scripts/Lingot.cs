@@ -7,9 +7,10 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
  * À faire:
  *  Les mp3 et les intégrer
  *  Menu ouvrir/fermer/Recommencer
- *	Intéraction ratelier <>Épée terminée
- *	(Bonus)Le métal orangé)
+ *	Intéraction ratelier <> Épée terminée
+ *	((Bonus)Le métal orangé)
  *	Remettre les valeurs dans l'inspecteur comme valeur par défaut dans le code
+ *	Le lingot pété peut se frapper encore pour plus de lingot pété
  */
 
 public class Lingot : MonoBehaviour
@@ -22,6 +23,7 @@ public class Lingot : MonoBehaviour
     private bool forgeEnCours = false;
     private bool seauEnCours = false;
     private Coroutine forgeRoutine;
+    private bool estDetruit = false;
 
 
     private XRGrabInteractable grabInteractable;
@@ -121,8 +123,11 @@ public class Lingot : MonoBehaviour
     }
 
     #region XR GRAB
-    //<IA> Modification du grab interactable par Gemini
-
+    /*
+     * Pour gérer autrement le XR Grab Interactable
+     * Pour gérer l'apparition et disparition du UI Lingot
+     *<IA> Modification par Gemini
+    */
     private void Awake()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
@@ -214,31 +219,15 @@ public class Lingot : MonoBehaviour
             }
         }
 
-        if (other.CompareTag("Ratellier"))
+        if (other.CompareTag("Ratelier"))
         {
-            // Vérifie que l'épée est terminée
-            if (etatLingot == 5)
-            {
-                // Forcer le drop si le joueur la tient
-                XRGrabInteractable grab = GetComponent<XRGrabInteractable>();
-                if (grab != null && grab.isSelected)
-                {
-                    grab.interactionManager.SelectExit(grab.firstInteractorSelecting, grab);
-                }
+            if (etatLingot != 5 || estDetruit) return;
+            estDetruit = true;
+            gameManager.EpeeTerminee();
+            if (grabInteractable != null) GetComponent<XRGrabInteractable>().enabled = false;
 
-                // Faire apparaître l'épée du ratelier
-                if (gameManager != null && gameManager.epeeRatelier != null)
-                {
-                    gameManager.epeeRatelier.SetActive(true);
-                }
-
-                // Incrémenter l'objectif
-                if (gameManager != null)
-                    gameManager.EpeeTerminee();
-
-                // Détruire l'épée du joueur
-                Destroy(gameObject);
-            }
+            Destroy(gameObject, 0.1f);
+            
         }
 
     }

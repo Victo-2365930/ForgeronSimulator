@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.XR.ARSubsystems.XRCpuImage;
 
 public class GameManager : MonoBehaviour
 {
@@ -72,7 +73,18 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI messageLingot;
 
     [Header("Ratelier")]
-    [SerializeField] public GameObject epeeRatelier;
+    private GameObject epeeRatelier;
+    [SerializeField, Tooltip("Première épée du ratelier")]
+    private GameObject ratelierEpee1;
+    [SerializeField, Tooltip("Première épée du ratelier")]
+    private GameObject ratelierEpee2;
+    [SerializeField, Tooltip("Première épée du ratelier")]
+    private GameObject ratelierEpee3;
+    [SerializeField, Tooltip("Première épée du ratelier")]
+    private GameObject ratelierEpee4;
+    [SerializeField, Tooltip("Première épée du ratelier")]
+    private GameObject ratelierEpee5;
+
 
 
     #endregion Variables
@@ -104,34 +116,36 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// Pour mettre à jour le UI
+    /// <IA>Aide sur le safety avec Gemini</IA>
     /// </summary>
     public void MajUI()
     {
-        if(lingotActif != null)
-        {
-            //Barre de Chaleur
-            float chaleurActuelle = lingotActif.chaleurLingot;
-            pourcentageChaleur =  chaleurActuelle / lingotActif.chaleurMaximale;
-            barreChaleur.SetProgression(pourcentageChaleur);
 
-            //Carrés d'erreurs
-            int nbErreur = lingotActif.erreurLingot;
-            erreur1.color = (nbErreur >= 1) ? Color.red : Color.white;
-            erreur2.color = (nbErreur >= 2) ? Color.red : Color.white;
-            erreur3.color = (nbErreur >= 3) ? Color.red : Color.white;
-            erreur4.color = (nbErreur >= 4) ? Color.red : Color.white;
-            erreur5.color = (nbErreur >= 5) ? Color.red : Color.white;
+        //Texte en haut du ratelier
+        if (messageEpee != null) messageEpee.text = $"Tu as terminé {nbEpeeCompletee} épée(s)";
+        if (messageLingot != null) messageLingot.text = $"Tu as cassé {nbLingotDetruit} lingot(s)";
 
-            //Texte d'instruction
-            int etatLingot = lingotActif.etatLingot;
-            float chaleurFrappeMin = lingotActif.chaleurMinimale;
-            if (etatLingot == 5) instruction.text = textesInstruction[5];
-            else if (chaleurActuelle <= chaleurFrappeMin) instruction.text = textesInstruction[6];
-            else instruction.text = textesInstruction[etatLingot];
+        if (lingotActif == null) return;
 
-            //Texte en haut du ratelier
+        //Barre de Chaleur
+        float chaleurActuelle = lingotActif.chaleurLingot;
+        pourcentageChaleur =  chaleurActuelle / lingotActif.chaleurMaximale;
+        barreChaleur.SetProgression(pourcentageChaleur);
 
-        }
+        //Carrés d'erreurs
+        int nbErreur = lingotActif.erreurLingot;
+        erreur1.color = (nbErreur >= 1) ? Color.red : Color.white;
+        erreur2.color = (nbErreur >= 2) ? Color.red : Color.white;
+        erreur3.color = (nbErreur >= 3) ? Color.red : Color.white;
+        erreur4.color = (nbErreur >= 4) ? Color.red : Color.white;
+        erreur5.color = (nbErreur >= 5) ? Color.red : Color.white;
+
+        //Texte d'instruction
+        int etatLingot = lingotActif.etatLingot;
+        float chaleurFrappeMin = lingotActif.chaleurMinimale;
+        if (etatLingot == 5) instruction.text = textesInstruction[5];
+        else if (chaleurActuelle <= chaleurFrappeMin) instruction.text = textesInstruction[6];
+        else instruction.text = textesInstruction[etatLingot];
 
     }
 
@@ -175,14 +189,23 @@ public class GameManager : MonoBehaviour
     public void EpeeTerminee()
     {
         nbEpeeCompletee++;
+
         MajUI();
-        //Ajouter une épée au ratelier
-        // Message pour épée terminé
-        if (messageEpee != null)
-            messageEpee.text = $"Tu as terminé {nbEpeeCompletee} épée(s)";
+        RatelierEpee();
+        // EpeeTerminée.mp3
 
         if (nbEpeeCompletee >= nbEpeeACompleter) GameOver(true);
 
+    }
+
+    private void RatelierEpee()
+    {
+        if (nbEpeeCompletee <= 0) return;
+        if (ratelierEpee1 != null) ratelierEpee1.SetActive(nbEpeeCompletee >= 1);
+        if (ratelierEpee2 != null) ratelierEpee2.SetActive(nbEpeeCompletee >= 2);
+        if (ratelierEpee3 != null) ratelierEpee3.SetActive(nbEpeeCompletee >= 3);
+        if (ratelierEpee4 != null) ratelierEpee4.SetActive(nbEpeeCompletee >= 4);
+        if (ratelierEpee5 != null) ratelierEpee5.SetActive(nbEpeeCompletee >= 5);
     }
 
 
