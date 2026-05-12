@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -90,9 +91,15 @@ public class GameManager : MonoBehaviour
         if (messageLingot != null)
             messageLingot.text = $"Tu as cassé {nbLingotDetruit} lingot(s)";
     }
-    void RecommencerJeu()
+    public void CommencerJeu()
     {
-        //Reset la scène?
+        
+    }
+
+    // Appelé par le bouton Rejouer
+    public void Rejouer()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     /// <summary>
