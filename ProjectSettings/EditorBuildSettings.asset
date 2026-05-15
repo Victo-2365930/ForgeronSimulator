@@ -5,9 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/ForgeSimulator.unity
+    guid: be3dca70699f20a4db5eae29fc49cc18
   m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: f4ac4152f16b62d43a09e2658e58bae7, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 66e8121ae04d38e429fded949f5ace89, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 7bdb60521200c3143afc9b6f7eba672e, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 359780d4b14372a4cb7bb9b42b4f6486, type: 2}
   m_UseUCBPForAssetBundles: 0
