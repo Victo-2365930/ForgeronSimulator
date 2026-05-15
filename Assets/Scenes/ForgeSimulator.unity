@@ -8168,17 +8168,14 @@ CapsuleCollider:
   m_Height: 1.3736386
   m_Direction: 1
   m_Center: {x: 0.00009031224, y: -0.63639, z: 0.017118558}
-<<<<<<< HEAD
 --- !u!4 &1263798376 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2206314954826680753, guid: b73ca60a1eca2044dbcfd8a697364f8f, type: 3}
   m_PrefabInstance: {fileID: 410378257}
-=======
 --- !u!1 &1279635200 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3243801601531219454, guid: 0ea2cb9ad1c4fcc488a77f7523ccab3a, type: 3}
   m_PrefabInstance: {fileID: 765752672}
->>>>>>> 5746ad02b730eddd99816a2024eb023d080d8547
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1281299765
 GameObject:
@@ -10666,19 +10663,11 @@ MonoBehaviour:
   messageObjectif: {fileID: 686978367}
   messageEpee: {fileID: 1302151854}
   messageLingot: {fileID: 1937729896}
-<<<<<<< HEAD
-  ratelierEpee1: {fileID: 0}
-  ratelierEpee2: {fileID: 0}
-  ratelierEpee3: {fileID: 0}
-  ratelierEpee4: {fileID: 0}
-  ratelierEpee5: {fileID: 0}
-=======
   ratelierEpee1: {fileID: 1347111360}
   ratelierEpee2: {fileID: 1279635200}
   ratelierEpee3: {fileID: 153028834}
   ratelierEpee4: {fileID: 440871020}
   ratelierEpee5: {fileID: 252477394}
->>>>>>> 5746ad02b730eddd99816a2024eb023d080d8547
 --- !u!4 &1654334283
 Transform:
   m_ObjectHideFlags: 0
@@ -13103,13 +13092,10 @@ Transform:
   - {fileID: 946000791}
   - {fileID: 920891232}
   - {fileID: 608592831}
-<<<<<<< HEAD
   - {fileID: 1231450410}
   - {fileID: 1533936153}
-=======
   - {fileID: 195190807}
   - {fileID: 879831050}
->>>>>>> 5746ad02b730eddd99816a2024eb023d080d8547
   m_Father: {fileID: 2060254470}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1879428003 stripped

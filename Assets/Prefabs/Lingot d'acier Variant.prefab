@@ -112,6 +112,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3773619893332725261, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
+      propertyPath: sonForge
+      value: 
+      objectReference: {fileID: 8300000, guid: 207691bcdbac55d4889dd9d4aa11f52b, type: 3}
+    - target: {fileID: 3773619893332725261, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
+      propertyPath: sonErreur
+      value: 
+      objectReference: {fileID: 8300000, guid: a19eaaf4c96e4504484b1b34c974e812, type: 3}
+    - target: {fileID: 3773619893332725261, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
+      propertyPath: sonTrempage
+      value: 
+      objectReference: {fileID: 8300000, guid: dfea7cc614df12d47a6112cf4c505fe8, type: 3}
+    - target: {fileID: 3773619893332725261, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: nbCoupRequis
       value: 3
       objectReference: {fileID: 0}
@@ -119,6 +131,10 @@ PrefabInstance:
       propertyPath: nbErreurLingot
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3773619893332725261, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
+      propertyPath: sonDestruction
+      value: 
+      objectReference: {fileID: 8300000, guid: a2dbe0e31ddc6484eb3ab6a16bd3a184, type: 3}
     - target: {fileID: 3773619893332725261, guid: 86686d9ba4426da47bfdbf13f5dbad1c, type: 3}
       propertyPath: vitesseRefroidissementAir
       value: 3

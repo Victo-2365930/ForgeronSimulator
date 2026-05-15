@@ -86,6 +86,12 @@ public class GameManager : MonoBehaviour
     [SerializeField, Tooltip("Première épée du ratelier")]
     private GameObject ratelierEpee5;
 
+    [Header("Sons")]
+    [SerializeField, Tooltip("Son joué lorsqu'une épée est terminée")]
+    private AudioClip sonEpeeTerminee;
+
+    private AudioSource audioSource;
+
     public enum EtatJeu { Menu, EnJeu, GameOver }
     private EtatJeu etatActuel;
 
@@ -94,6 +100,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
         // Le jeu est figé tant que le joueur n'a pas appuyé sur "Jouer"
         Time.timeScale = 0f;
 
@@ -195,7 +203,7 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// Pour incrémenter le nombre de lingot détruit
-    ///     Vérifie le GameOver
+    /// Vérifie le GameOver
     /// </summary>
     public void LingotDetruit()
     {
@@ -219,7 +227,11 @@ public class GameManager : MonoBehaviour
 
         MajUI();
         RatelierEpee();
-        // EpeeTerminée.mp3
+
+        if (audioSource != null && sonEpeeTerminee != null)
+        {
+            audioSource.PlayOneShot(sonEpeeTerminee);
+        }
 
         if (nbEpeeCompletee >= nbEpeeACompleter) GameOver(true);
 

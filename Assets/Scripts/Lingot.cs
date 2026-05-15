@@ -75,6 +75,21 @@ public class Lingot : MonoBehaviour
     private int nbCoupRequis = 3;
     private int nbCoup = 0;
 
+    [Header("Sons")]
+    [SerializeField, Tooltip("Son lorsque le marteau frappe correctement")]
+    private AudioClip sonForge;
+
+    [SerializeField, Tooltip("Son lorsqu'il y a une erreur")]
+    private AudioClip sonErreur;
+
+    [SerializeField, Tooltip("Son lorsque le métal est trempé")]
+    private AudioClip sonTrempage;
+
+    [SerializeField, Tooltip("Son lorsque le lingot est détruit")]
+    private AudioClip sonDestruction;
+
+    private AudioSource audioSource;
+
 
     #endregion Variables
 
@@ -109,13 +124,22 @@ public class Lingot : MonoBehaviour
 
         if (chaleurLingot < chaleurMinimale || etatLingot == 4)
         {
-            //BruitDerreur.mp3
+            if (audioSource != null && sonErreur != null)
+            {
+                audioSource.PlayOneShot(sonErreur);
+            }
+
             erreurLingot++;
             gameManager.MajUI();
             if (erreurLingot >= nbErreurLingot) DetruireLingot();
         }
         else {
-            //BruitDeForge.mp3
+
+            if (audioSource != null && sonForge != null)
+            {
+                audioSource.PlayOneShot(sonForge);
+            }
+
             nbCoup++;
             if (nbCoup % nbCoupRequis == 0) ChangerEtat();
         }
@@ -131,6 +155,7 @@ public class Lingot : MonoBehaviour
     private void Awake()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -215,7 +240,11 @@ public class Lingot : MonoBehaviour
                 chaleurLingot = 0;
                 MiseAJourVisuel();
                 gameManager.MajUI();
-                //PSSSHHH.mp3
+
+                if (audioSource != null && sonTrempage != null)
+                {
+                    audioSource.PlayOneShot(sonTrempage);
+                }
             }
         }
 
@@ -332,12 +361,25 @@ public class Lingot : MonoBehaviour
     /// </summary>
     private IEnumerator GestionnaireDestruction()
     {
-        //TuLasPété.mp3
-        gameManager.LingotDetruit();
-        yield return new WaitForSeconds(2.0f);
-        Destroy(gameObject);
+        if (audioSource != null && sonDestruction != null)
+        {
+            audioSource.PlayOneShot(sonDestruction);
+        }
 
+        gameManager.LingotDetruit();
+
+        float dureeSon = 2.0f;
+
+        if (sonDestruction != null)
+        {
+            dureeSon = sonDestruction.length;
+        }
+
+        yield return new WaitForSeconds(dureeSon);
+
+        Destroy(gameObject);
     }
+
     #endregion
 
 }
